@@ -9,33 +9,23 @@ MeLEDMatrix ledMatrix(PORT_6); // Ajusta el puerto según tu conexión
 void setup() {
   // Inicializar la comunicación serie para la depuración
   Serial.begin(9600);
-  
-  // Establecer el brillo del panel LED (opcional)
+
+  // Inicializar el panel de LED
   ledMatrix.setBrightness(8);  // Ajustar brillo (0-15)
 }
 
 void loop() {
   // Leer la distancia desde el sensor de ultrasonido
-  float distance = ultrasonic.distanceCm();
-
-  // Limpiar pantalla antes de mostrar
-  ledMatrix.clearScreen();
-
-  // Convertir la distancia a una cadena de caracteres
-  char buffer[10];
-  dtostrf(distance, 4, 1, buffer);  // Convierte la distancia a una cadena con 1 decimal
+  int distance = ultrasonic.distanceCm();
 
   // Mostrar la distancia en el panel de luces LED
-  ledMatrix.drawStr(0, 0, buffer);  // Mostrar la cadena en la posición (0, 0)
-
-  // Actualizar la pantalla para reflejar los cambios
-  ledMatrix.display();
+  ledMatrix.clearScreen();  // Limpiar pantalla antes de mostrar
+  ledMatrix.showNum(distance, 0);  // Mostrar número en la posición 0
+  delay(500);  // Retardo para actualizar la pantalla
 
   // Mostrar la distancia en el monitor serie
   Serial.print("Distancia: ");
   Serial.print(distance);
   Serial.println(" cm");
-
-  delay(500);  // Retardo para actualizar la pantalla
 }
 
